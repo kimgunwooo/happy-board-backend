@@ -7,6 +7,7 @@ import likelion.ideateam3.happy_board.domain.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Board> boards = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member" , cascade = CascadeType.ALL) // 멤버가 없어지면 멤버의 댓글도 모두 없어져야
     private List<Comment> comments = new ArrayList<>();
 }
 
