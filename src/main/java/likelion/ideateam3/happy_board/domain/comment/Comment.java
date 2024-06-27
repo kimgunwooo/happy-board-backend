@@ -70,14 +70,14 @@ public class Comment extends BaseEntity {
     // dto 의 toEntity 는 dto 정보만을 기반으로 entity 를 생성하는 것
     // 이번에 정의한 것은 db 기반으로 만드는 것
     public static Comment createEntityWithDto(CommentDTO dto, Board board , Member member , Comment parent) {
-        // 엔티티 생성 불가한 경우 (POST 메서드가 PATCH 기능하는거 방지하기 위해 )  예외 발생
-        if(dto.getId() != null) throw new BusinessException(ExceptionType.ESSENTIAL_FIELD_MISSING_ERROR);
+        // // 엔티티 생성 불가한 경우 (POST 메서드가 PATCH 기능하는거 방지하기 위해 )  예외 발생
+        // if(dto.getId() != null) throw new BusinessException(ExceptionType.ESSENTIAL_FIELD_MISSING_ERROR);
 
-        if(dto.getBoardId() != board.getId()) throw new BusinessException(ExceptionType.INVALID_VALUE_ERROR);
-        if(dto.getMemberId() != member.getId()) throw new BusinessException(ExceptionType.INVALID_VALUE_ERROR);
-        if(parent != null ) {
-            if (dto.getParentId() != parent.getId()) throw new BusinessException(ExceptionType.INVALID_VALUE_ERROR);
-        }
+        // if(dto.getBoardId() != board.getId()) throw new BusinessException(ExceptionType.INVALID_VALUE_ERROR);
+        // if(dto.getMemberId() != member.getId()) throw new BusinessException(ExceptionType.INVALID_VALUE_ERROR);
+        // if(parent != null ) {
+        //     if (dto.getParentId() != parent.getId()) throw new BusinessException(ExceptionType.INVALID_VALUE_ERROR);
+        // }
 
         // 엔티티 생성 및 반환
         Comment comment = new Comment(board, member,parent , dto.getContent() , dto.getLikes());
