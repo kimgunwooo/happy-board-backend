@@ -2,7 +2,6 @@ package likelion.ideateam3.happy_board.response;
 
 
 import likelion.ideateam3.happy_board.response.exception.ExceptionType;
-import org.springframework.stereotype.Component;
 
 public class ResponseUtil {
 
