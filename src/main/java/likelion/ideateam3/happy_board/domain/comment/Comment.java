@@ -70,6 +70,7 @@ public class Comment extends BaseEntity {
     // dto 의 toEntity 는 dto 정보만을 기반으로 entity 를 생성하는 것
     // 이번에 정의한 것은 db 기반으로 만드는 것
     public static Comment createEntityWithDto(CommentDTO dto, Board board , Member member , Comment parent) {
+
         // 엔티티 생성 불가한 경우는 컨트롤러 단의 @Valid 가 알아서 거른다
        
         // 엔티티 생성 및 반환
