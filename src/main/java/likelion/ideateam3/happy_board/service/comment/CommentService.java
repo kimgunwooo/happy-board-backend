@@ -6,7 +6,7 @@ import likelion.ideateam3.happy_board.domain.comment.Comment;
 import likelion.ideateam3.happy_board.domain.member.Member;
 import likelion.ideateam3.happy_board.domain.member.MemberPrincipal;
 import likelion.ideateam3.happy_board.dto.CommentDTO;
-import likelion.ideateam3.happy_board.repository.board.BoardRepository;
+import likelion.ideateam3.happy_board.repository.board.HappyBoardRepository;
 import likelion.ideateam3.happy_board.repository.comment.CommentRepository;
 import likelion.ideateam3.happy_board.repository.member.MemberRepository;
 import likelion.ideateam3.happy_board.response.exception.BusinessException;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
-    private final BoardRepository boardRepository;
+    private final HappyBoardRepository happyBoardRepository;
 
 
     @Transactional
@@ -54,7 +54,7 @@ public class CommentService {
 
         // 1. 해당 postId 를 가지는 게시글이 존재하는지 우선 검색
         Long boardId = dto.getBoardId();
-        Board board = boardRepository.findById(boardId)
+        Board board = happyBoardRepository.findById(boardId)
                 .orElseThrow(()->   new BusinessException(ExceptionType.BOARD_NOT_FOUND_ERROR)); // post 없을 시 예외 발생
         log.info("createComment - boardRepository.findById(postId) >> "+board);
 
