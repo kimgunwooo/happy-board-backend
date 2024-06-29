@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(HttpMethod.POST, "/api/members/sign-up").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/members/login").permitAll()
+                        // TODO. 요청별 권한 맞게 추가
                         .requestMatchers("/api/board/comment/**").hasAnyRole("USER")
                         .anyRequest().hasRole("ADMIN"))
                 .addFilterBefore(new JwtAuthenticationFilter(tokenProvider, authenticationManager), UsernamePasswordAuthenticationFilter.class)
