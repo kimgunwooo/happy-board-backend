@@ -24,12 +24,6 @@ import java.util.List;
 public class CommentController {
     private final CommentService commentService;
 
-    @DeleteMapping("/comments/{boardId}")
-    public ResponseEntity<ResponseBody<String>>  deleteAllComment(@PathVariable Long boardId){
-             commentService.deleteByBoardId(boardId);
-        return  ResponseEntity.status(HttpStatus.OK) .body(ResponseUtil.createSuccessResponse("정상적으로 삭제됨"));
-    }
-
     @GetMapping("/comments/{boardId}")
     public ResponseEntity<ResponseBody<List<CommentDTO>>> getCommentsById(@PathVariable Long boardId ){
             List<CommentDTO>  response = commentService.getCommentsById(boardId);
