@@ -4,6 +4,7 @@ package likelion.ideateam3.happy_board.service.comment;
 import likelion.ideateam3.happy_board.domain.board.Board;
 import likelion.ideateam3.happy_board.domain.comment.Comment;
 import likelion.ideateam3.happy_board.domain.member.Member;
+import likelion.ideateam3.happy_board.domain.member.MemberPrincipal;
 import likelion.ideateam3.happy_board.dto.CommentDTO;
 import likelion.ideateam3.happy_board.repository.board.BoardRepository;
 import likelion.ideateam3.happy_board.repository.comment.CommentRepository;
@@ -12,6 +13,8 @@ import likelion.ideateam3.happy_board.response.exception.BusinessException;
 import likelion.ideateam3.happy_board.response.exception.ExceptionType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,15 +49,22 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentDTO createComment(Long memberId , Long boardId, CommentDTO dto) {
-        log.info("createComment-input >> "+ memberId+", "+boardId+", "+dto.toString());
+    public CommentDTO createComment(CommentDTO dto) {
+        log.info("createComment-input >> "+dto.toString());
+
         // 1. 해당 postId 를 가지는 게시글이 존재하는지 우선 검색
+        Long boardId = dto.getBoardId();
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(()->   new BusinessException(ExceptionType.BOARD_NOT_FOUND_ERROR)); // post 없을 시 예외 발생
-
         log.info("createComment - boardRepository.findById(postId) >> "+board);
 
         // 2. 해당 id 를 가지는 사용자가 존재하는지 우선 검색
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("createComment - authentication>> "+authentication);
+        MemberPrincipal principal = (MemberPrincipal) authentication.getPrincipal();
+        log.info("createComment - principal>> "+principal);
+        Long memberId= Long.valueOf(principal.getMemberId());
+        log.info("createComment - principal.getMemberId() >> "+memberId);
         Member member = memberRepository.findById(memberId).orElseThrow(()->  new BusinessException(ExceptionType.MEMBER_NOT_FOUND_ERROR));
         log.info("createComment - memberRepository.findById(memberId) >> "+member);
 
@@ -71,6 +81,7 @@ public class CommentService {
         Comment created = commentRepository.save(comment);
         return CommentDTO.toDTO(created);
     }
+
 
 
 

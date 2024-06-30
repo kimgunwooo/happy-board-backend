@@ -34,6 +34,7 @@ public class SecurityConfig {
     }
 
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, TokenProvider tokenProvider, AuthenticationManager authenticationManager) throws Exception {
         http
@@ -43,7 +44,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(HttpMethod.POST, "/api/members/sign-up").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/members/login").permitAll()
-                        .requestMatchers("/api/board/comment/**").hasAnyRole("USER")
+                        .requestMatchers("/api/board/comment/comments/{boardId}", "/api/board/comment/{id}").permitAll() // 먼저 적용한거 우선 적용된다
+                        .requestMatchers("/api/board/comment/**").hasAnyRole("USER") // 앞에 적용 시킨거 제외하곤 comment대해선 전부 권한 user 적용
                         .anyRequest().hasRole("ADMIN"))
                 .addFilterBefore(new JwtAuthenticationFilter(tokenProvider, authenticationManager), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> e
