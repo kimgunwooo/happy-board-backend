@@ -42,12 +42,7 @@ public class OpenAIClient {
 
     // request 보내고 받아온 resposne 에서 유해성 판단 결과 뽑아서 반환
     public Mono<Integer> analyzeBoardHazard(String message) {
-        Mono<Integer> hazard = doRequest(message)
-                .map(response -> Integer.valueOf(response.getChoices().get(0).getMessage().getContent()));
-
-        hazard.subscribe( result -> log.info("유해성 정도: "+result));
-
-        return hazard;
+        return doRequest(message)
+            .map(response -> Integer.valueOf(response.getChoices().get(0).getMessage().getContent()));
     }
-
 }

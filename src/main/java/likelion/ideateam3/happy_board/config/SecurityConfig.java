@@ -46,6 +46,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/members/login").permitAll()
                         .requestMatchers("/api/board/comment/comments/{boardId}", "/api/board/comment/{id}").permitAll() // 먼저 적용한거 우선 적용된다
                         .requestMatchers("/api/board/comment/**").hasAnyRole("USER") // 앞에 적용 시킨거 제외하곤 comment대해선 전부 권한 user 이상으로 적용
+                        // TODO. 요청별 권한 맞게 추가
+                        .requestMatchers(HttpMethod.POST, "/api/files/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/boards/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/boards/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/boards/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET).permitAll()
                         .anyRequest().hasRole("ADMIN"))
                 .addFilterBefore(new JwtAuthenticationFilter(tokenProvider, authenticationManager), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> e
