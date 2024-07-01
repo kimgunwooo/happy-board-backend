@@ -57,9 +57,28 @@ public class HappyBoardController {
 			.body(createSuccessResponse(boardDto));
 	}
 
+	// 필터링을 통과한 게시글을 모두 확인
 	@GetMapping
-	public ResponseEntity<ResponseBody<List<BoardDto>>> readAll() {
-		List<BoardDto> boardDtoList = happyBoardService.readAll();
+	public ResponseEntity<ResponseBody<List<BoardDto>>> readAllHazardFalse() {
+		List<BoardDto> boardDtoList = happyBoardService.readAllHazardFalse();
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(createSuccessResponse(boardDtoList));
+	}
+
+	// 필터링에 걸리지 않은 모든 내 글을 확인
+	@GetMapping("/me")
+	public ResponseEntity<ResponseBody<List<BoardDto>>> readAllMeHazardFalse(@AuthenticationPrincipal MemberPrincipal member) {
+		List<BoardDto> boardDtoList = happyBoardService.readAllMeHazardFalse(member.getMemberId());
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(createSuccessResponse(boardDtoList));
+	}
+
+	// 필터링에 걸린 모든 내 글을 확인
+	@GetMapping("/me/hazard")
+	public ResponseEntity<ResponseBody<List<BoardDto>>> readAllMeHazardTrue(@AuthenticationPrincipal MemberPrincipal member) {
+		List<BoardDto> boardDtoList = happyBoardService.readAllMeHazardTrue(member.getMemberId());
 		return ResponseEntity
 			.status(HttpStatus.OK)
 			.body(createSuccessResponse(boardDtoList));
