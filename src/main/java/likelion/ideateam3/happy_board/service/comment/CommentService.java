@@ -7,7 +7,7 @@ import likelion.ideateam3.happy_board.domain.member.Member;
 import likelion.ideateam3.happy_board.domain.member.MemberPrincipal;
 import likelion.ideateam3.happy_board.dto.CommentRequestDTO;
 import likelion.ideateam3.happy_board.dto.CommentResponseDTO;
-import likelion.ideateam3.happy_board.repository.board.BoardRepository;
+import likelion.ideateam3.happy_board.repository.board.HappyBoardRepository;
 import likelion.ideateam3.happy_board.repository.comment.CommentRepository;
 import likelion.ideateam3.happy_board.repository.member.MemberRepository;
 import likelion.ideateam3.happy_board.response.exception.BusinessException;
