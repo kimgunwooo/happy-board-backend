@@ -5,7 +5,8 @@ import likelion.ideateam3.happy_board.domain.board.Board;
 import likelion.ideateam3.happy_board.domain.comment.Comment;
 import likelion.ideateam3.happy_board.domain.member.Member;
 import likelion.ideateam3.happy_board.domain.member.MemberPrincipal;
-import likelion.ideateam3.happy_board.dto.CommentDTO;
+import likelion.ideateam3.happy_board.dto.CommentRequestDTO;
+import likelion.ideateam3.happy_board.dto.CommentResponseDTO;
 import likelion.ideateam3.happy_board.repository.board.BoardRepository;
 import likelion.ideateam3.happy_board.repository.comment.CommentRepository;
 import likelion.ideateam3.happy_board.repository.member.MemberRepository;
@@ -36,20 +37,20 @@ public class CommentService {
     }
 
 
-    public List<CommentDTO> getCommentsById(Long boardId) {
+    public List<CommentResponseDTO> getCommentsById(Long boardId) {
         List<Comment> entityList= commentRepository.findByBoardId(boardId);
-        List<CommentDTO> dtoList = entityList.stream().map(entity->CommentDTO.toDTO(entity)).collect(Collectors.toList());
+        List<CommentResponseDTO> dtoList = entityList.stream().map(entity-> CommentResponseDTO.toDTO(entity)).collect(Collectors.toList());
         return dtoList;
     }
 
-    public List<CommentDTO> getChildCommentsById(Long id) {
+    public List<CommentResponseDTO> getChildCommentsById(Long id) {
         List<Comment> entityList= commentRepository.findByParentId(id);
-        List<CommentDTO> dtoList = entityList.stream().map(entity->CommentDTO.toDTO(entity)).collect(Collectors.toList());
+        List<CommentResponseDTO> dtoList = entityList.stream().map(entity-> CommentResponseDTO.toDTO(entity)).collect(Collectors.toList());
         return dtoList;
     }
 
     @Transactional
-    public CommentDTO createComment(CommentDTO dto) {
+    public CommentResponseDTO createComment(CommentRequestDTO dto) {
         log.info("createComment-input >> "+dto.toString());
 
         // 1. 해당 postId 를 가지는 게시글이 존재하는지 우선 검색
@@ -79,14 +80,14 @@ public class CommentService {
         // 4. 댓글 엔티티 생성
         Comment comment = Comment.createEntityWithDto(dto, board, member ,parentComment );
         Comment created = commentRepository.save(comment);
-        return CommentDTO.toDTO(created);
+        return CommentResponseDTO.toDTO(created);
     }
 
 
 
 
     @Transactional
-    public CommentDTO patchComment(Long id, CommentDTO dto) {
+    public CommentResponseDTO patchComment(Long id, CommentRequestDTO dto) {
         // 1. 해당 id 를 가지는 댓글이 존재하는지 우선 검색
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(()-> new BusinessException(ExceptionType.COMMENT_NOT_FOUND_ERROR));
@@ -96,7 +97,7 @@ public class CommentService {
         comment.patch(dto);
         log.info("patchComment >> " + comment);
 
-        return CommentDTO.toDTO(comment);
+        return CommentResponseDTO.toDTO(comment);
     }
 
     @Transactional
