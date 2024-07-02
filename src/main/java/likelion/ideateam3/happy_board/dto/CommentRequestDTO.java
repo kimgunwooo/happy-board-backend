@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @AllArgsConstructor
 @Slf4j
-public class CommentDTO {
+public class CommentRequestDTO {
 
 
     private Long id;
@@ -24,8 +24,8 @@ public class CommentDTO {
         return entity;
     }
 
-    public static CommentDTO toDTO(Comment comment){
-        return  new CommentDTO(comment.getId(), comment.getBoard().getId()
+    public static CommentRequestDTO toDTO(Comment comment){
+        return  new CommentRequestDTO(comment.getId(), comment.getBoard().getId()
                 ,  comment.getParent() ==null ? null: comment.getParent().getId()
                 ,  comment.getContent(), comment.getLikes());
     }

@@ -5,13 +5,10 @@ import jakarta.validation.constraints.PositiveOrZero;
 import likelion.ideateam3.happy_board.domain.board.Board;
 import likelion.ideateam3.happy_board.domain.common.BaseEntity;
 import likelion.ideateam3.happy_board.domain.member.Member;
-import likelion.ideateam3.happy_board.dto.CommentDTO;
-import likelion.ideateam3.happy_board.response.exception.BusinessException;
-import likelion.ideateam3.happy_board.response.exception.ExceptionType;
+import likelion.ideateam3.happy_board.dto.CommentRequestDTO;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +66,7 @@ public class Comment extends BaseEntity {
     // DTO 에 정의한 toEntity 와는 별개로 생성
     // dto 의 toEntity 는 dto 정보만을 기반으로 entity 를 생성하는 것
     // 이번에 정의한 것은 db 기반으로 만드는 것
-    public static Comment createEntityWithDto(CommentDTO dto, Board board , Member member , Comment parent) {
+    public static Comment createEntityWithDto(CommentRequestDTO dto, Board board , Member member , Comment parent) {
 
         // 엔티티 생성 불가한 경우는 컨트롤러 단의 @Valid 가 알아서 거른다
        
@@ -78,7 +75,7 @@ public class Comment extends BaseEntity {
         return comment;
     }
 
-    public void patch(CommentDTO dto){ // CommentService 의 patch 전용
+    public void patch(CommentRequestDTO dto){ // CommentService 의 patch 전용
         if(dto.getContent() !=null) this.content = dto.getContent();
         if(dto.getLikes() !=null) this.likes = dto.getLikes();
     }
