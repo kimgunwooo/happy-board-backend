@@ -36,13 +36,14 @@ public class CommentService {
         commentRepository.deleteByBoardId(boardId);
     }
 
-
+    @Transactional(readOnly = true)
     public List<CommentResponseDTO> getCommentsById(Long boardId) {
         List<Comment> entityList= commentRepository.findByBoardId(boardId);
         List<CommentResponseDTO> dtoList = entityList.stream().map(entity-> CommentResponseDTO.toDTO(entity)).collect(Collectors.toList());
         return dtoList;
     }
 
+    @Transactional(readOnly = true)
     public List<CommentResponseDTO> getChildCommentsById(Long id) {
         List<Comment> entityList= commentRepository.findByParentId(id);
         List<CommentResponseDTO> dtoList = entityList.stream().map(entity-> CommentResponseDTO.toDTO(entity)).collect(Collectors.toList());
