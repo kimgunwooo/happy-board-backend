@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import static likelion.ideateam3.happy_board.response.ResponseUtil.createFailureResponse;
 
@@ -32,9 +33,19 @@ public class GlobalExceptionHandler {
                 .body(createFailureResponse(ExceptionType.BINDING_ERROR, customMessage));
     }
 
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    protected ResponseEntity<ResponseBody<Void>> handleMaxUploadSizeExceededException(
+        MaxUploadSizeExceededException e) {
+        log.info("handleMaxUploadSizeExceededException : {}", e.getMessage());
+
+        return ResponseEntity
+                .status(ExceptionType.FILE_TOO_LARGE.getStatus())
+                .body(createFailureResponse(ExceptionType.FILE_TOO_LARGE));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseBody<Void>> exception(Exception e) {
-        log.error("Exception Message: {} ", e.getMessage());
+        log.error("Exception Message : {} ", e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(createFailureResponse(ExceptionType.UNEXPECTED_SERVER_ERROR));

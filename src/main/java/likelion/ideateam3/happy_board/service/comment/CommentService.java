@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
-    private final BoardRepository boardRepository;
+    private final HappyBoardRepository happyBoardRepository;
 
 
     @Transactional
@@ -55,7 +55,7 @@ public class CommentService {
 
         // 1. 해당 postId 를 가지는 게시글이 존재하는지 우선 검색
         Long boardId = dto.getBoardId();
-        Board board = boardRepository.findById(boardId)
+        Board board = happyBoardRepository.findById(boardId)
                 .orElseThrow(()->   new BusinessException(ExceptionType.BOARD_NOT_FOUND_ERROR)); // post 없을 시 예외 발생
         log.info("createComment - boardRepository.findById(postId) >> "+board);
 
